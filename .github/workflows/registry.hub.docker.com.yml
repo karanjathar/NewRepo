@@ -2,7 +2,7 @@ name: Build and deploy .NET application to container app firstazureapp-app-20250
 on:
   push:
     branches:
-    - main
+    - master
 env:
   CONTAINER_APP_CONTAINER_NAME: firstazureapp
   CONTAINER_APP_NAME: firstazureapp-app-20250220182951
