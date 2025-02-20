@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  firstazureapp:
+    image: ${DOCKER_REGISTRY-}firstazureapp
+    build:
+      context: .
+      dockerfile: FirstAzureApp\Dockerfile
