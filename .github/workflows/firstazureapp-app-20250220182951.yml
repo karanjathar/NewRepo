@@ -28,7 +28,7 @@ jobs:
         username: ${{ secrets.FirstAzureApp20250220183507_USERNAME_7A4D }}
         password: ${{ secrets.FirstAzureApp20250220183507_PASSWORD_7A4D }}
     - name: Build and push container image to registry
-      run: dotnet publish -c Release -r linux-x64 -p:PublishProfile=DefaultContainer -p:ContainerImageTag=${{ github.sha }} --no-self-contained -p:ContainerRegistry=${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} -bl
+      run: dotnet publish FirstAzureApp.csproj -c Release -r linux-x64 -p:PublishProfile=DefaultContainer -p:ContainerImageTag=${{ github.sha }} --no-self-contained -p:ContainerRegistry=${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} -bl
     - name: Upload binlog for investigation
       uses: actions/upload-artifact@v4
       with:
