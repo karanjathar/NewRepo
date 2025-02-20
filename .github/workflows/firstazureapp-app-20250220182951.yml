@@ -2,7 +2,7 @@ name: Build and deploy .NET application to container app firstazureapp-app-20250
 on:
   push:
     branches:
-    - master
+    - main
 env:
   CONTAINER_APP_CONTAINER_NAME: firstazureapp
   CONTAINER_APP_NAME: firstazureapp-app-20250220182951
@@ -25,12 +25,12 @@ jobs:
       uses: azure/docker-login@v1
       with:
         login-server: ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}
-        username: ${{ secrets.FirstAzureApp20250220183507_USERNAME_E5E8 }}
-        password: ${{ secrets.FirstAzureApp20250220183507_PASSWORD_E5E8 }}
+        username: ${{ secrets.FirstAzureApp20250220183507_USERNAME_C695 }}
+        password: ${{ secrets.FirstAzureApp20250220183507_PASSWORD_C695 }}
     - name: Build and push container image to registry
       run: dotnet publish -c Release -r linux-x64 -p:PublishProfile=DefaultContainer -p:ContainerImageTag=${{ github.sha }} --no-self-contained -p:ContainerRegistry=${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} -bl
     - name: Upload binlog for investigation
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         if-no-files-found: error
         name: binlog
@@ -49,7 +49,7 @@ jobs:
         inlineScript: >
           az config set extension.use_dynamic_install=yes_without_prompt
 
-          az containerapp registry set --name ${{ env.CONTAINER_APP_NAME }} --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} --server ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} --username ${{ secrets.FirstAzureApp20250220183507_USERNAME_E5E8 }} --password ${{ secrets.FirstAzureApp20250220183507_PASSWORD_E5E8 }}
+          az containerapp registry set --name ${{ env.CONTAINER_APP_NAME }} --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} --server ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} --username ${{ secrets.FirstAzureApp20250220183507_USERNAME_C695 }} --password ${{ secrets.FirstAzureApp20250220183507_PASSWORD_C695 }}
 
           az containerapp update --name ${{ env.CONTAINER_APP_NAME }} --container-name ${{ env.CONTAINER_APP_CONTAINER_NAME }} --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} --image ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.PROJECT_NAME_FOR_DOCKER }}:${{ github.sha }}
     - name: logout
