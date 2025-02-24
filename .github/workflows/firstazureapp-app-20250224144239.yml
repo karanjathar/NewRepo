@@ -1,13 +1,13 @@
-name: Build and deploy .NET application to container app firstazureapp-app-20250220182951
+name: Build and deploy .NET application to container app firstazureapp-app-20250224144239
 on:
   push:
     branches:
-    - master
+    - main
 env:
   CONTAINER_APP_CONTAINER_NAME: firstazureapp
-  CONTAINER_APP_NAME: firstazureapp-app-20250220182951
-  CONTAINER_APP_RESOURCE_GROUP_NAME: Test
-  CONTAINER_REGISTRY_LOGIN_SERVER: firstazureapp20250220183507.azurecr.io
+  CONTAINER_APP_NAME: firstazureapp-app-20250224144239
+  CONTAINER_APP_RESOURCE_GROUP_NAME: firstazureapp-app-20250224144239ResourceGroup
+  CONTAINER_REGISTRY_LOGIN_SERVER: firstazureapp20250224144806.azurecr.io
   DOTNET_CORE_VERSION: 8.0.x
   PROJECT_NAME_FOR_DOCKER: firstazureapp
 jobs:
@@ -25,12 +25,12 @@ jobs:
       uses: azure/docker-login@v1
       with:
         login-server: ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}
-        username: ${{ secrets.FirstAzureApp20250220183507_USERNAME_CD21 }}
-        password: ${{ secrets.FirstAzureApp20250220183507_PASSWORD_CD21 }}
+        username: ${{ secrets.FirstAzureApp20250224144806_USERNAME_85CE }}
+        password: ${{ secrets.FirstAzureApp20250224144806_PASSWORD_85CE }}
     - name: Build and push container image to registry
-      run: dotnet publish FirstAzureApp.sln -c Release -r linux-x64 -p:PublishProfile=DefaultContainer -p:ContainerImageTag=${{ github.sha }} --no-self-contained -p:ContainerRegistry=${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} -bl
+      run: dotnet publish -c Release -r linux-x64 -p:PublishProfile=DefaultContainer -p:ContainerImageTag=${{ github.sha }} --no-self-contained -p:ContainerRegistry=${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} -bl
     - name: Upload binlog for investigation
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         if-no-files-found: error
         name: binlog
@@ -42,14 +42,14 @@ jobs:
     - name: Azure Login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.firstazureapp_app_20250220182951_SPN }}
+        creds: ${{ secrets.firstazureapp_app_20250224144239_SPN }}
     - name: Deploy to containerapp
       uses: azure/CLI@v1
       with:
         inlineScript: >
           az config set extension.use_dynamic_install=yes_without_prompt
 
-          az containerapp registry set --name ${{ env.CONTAINER_APP_NAME }} --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} --server ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} --username ${{ secrets.FirstAzureApp20250220183507_USERNAME_CD21 }} --password ${{ secrets.FirstAzureApp20250220183507_PASSWORD_CD21 }}
+          az containerapp registry set --name ${{ env.CONTAINER_APP_NAME }} --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} --server ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} --username ${{ secrets.FirstAzureApp20250224144806_USERNAME_85CE }} --password ${{ secrets.FirstAzureApp20250224144806_PASSWORD_85CE }}
 
           az containerapp update --name ${{ env.CONTAINER_APP_NAME }} --container-name ${{ env.CONTAINER_APP_CONTAINER_NAME }} --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} --image ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.PROJECT_NAME_FOR_DOCKER }}:${{ github.sha }}
     - name: logout
