@@ -2,7 +2,7 @@ name: Build and deploy .NET application to container app firstazureapp-app-20250
 on:
   push:
     branches:
-    - main
+    - master
 env:
   CONTAINER_APP_CONTAINER_NAME: firstazureapp
   CONTAINER_APP_NAME: firstazureapp-app-20250224144239
@@ -30,7 +30,7 @@ jobs:
     - name: Build and push container image to registry
       run: dotnet publish -c Release -r linux-x64 -p:PublishProfile=DefaultContainer -p:ContainerImageTag=${{ github.sha }} --no-self-contained -p:ContainerRegistry=${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} -bl
     - name: Upload binlog for investigation
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         if-no-files-found: error
         name: binlog
